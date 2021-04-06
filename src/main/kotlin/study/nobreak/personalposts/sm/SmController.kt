@@ -1,8 +1,10 @@
 package study.nobreak.personalposts.sm
 
+import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpSession
 
@@ -11,27 +13,31 @@ import javax.servlet.http.HttpSession
 class SmController(var smUserService: SmUserService) {
 
     // create user
-    @GetMapping("/sign")
+    @ResponseBody
+    @PostMapping("/sign")
     fun addSmUser(
         model: Model,
         @RequestParam(value = "id") userId: String,
         @RequestParam(value = "password") password: String
-    ) {
-
-        val user = smUserService.addUser(userId,password)
-        println("result: $user")
-        //return ""
+    ): ResponseEntity<Any> {
+        return ResponseEntity.ok().body(smUserService.addUser(userId, password))
     }
 
     //check user
-    @GetMapping("/login")
+    @PostMapping("/login")
     fun checkSmUser(
         model: Model,
         session: HttpSession,
         @RequestParam(value = "id") userId: String,
         @RequestParam(value = "password") password: String
-    ): String {
-        smUserService.checkSmUser(model,session,userId,password)
-        return "failed"
+    ): ResponseEntity<SmUser> {
+
+        val user = smUserService.checkUser(userId, password)
+        session.setAttribute("userId", user.userId)
+        model.addAttribute("title", "Welcome")
+        model.addAttribute("userId", userId)
+
+        return ResponseEntity.ok().body(user)
     }
+
 }

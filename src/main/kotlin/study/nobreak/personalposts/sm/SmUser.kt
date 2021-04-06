@@ -6,6 +6,7 @@ import javax.persistence.Id
 
 @Entity
 class SmUser(
-    var userId:String,
-    var password:String,
-    @Id @GeneratedValue var id:Long?=null)
+    var userId: String,
+    var password: String,
+    @Id @GeneratedValue var id: Long? = null
+)
