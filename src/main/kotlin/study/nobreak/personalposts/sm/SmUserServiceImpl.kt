@@ -7,22 +7,22 @@ import java.security.MessageDigest
 class SmUserServiceImpl(val userRepository: UserRepository) : SmUserService {
 
 
-    override fun addUser(userId: String, password: String) {
+    override fun addUser(userId: String, password: String):SmUser {
 
         val cryptoPass: String = crypto(password)
         val user = userRepository.save(SmUser(userId, cryptoPass))
-
+        return user
     }
 
     override fun checkUser(userId: String, password: String): SmUser {
 
         val cryptoPass: String = crypto(password)
-        val user = userRepository.findByUserId(userId);
+        val user = userRepository.findByUserId(userId)
 
-            val user_pass = user.password
-            if (cryptoPass.equals(user_pass)) {
-                return user
-            }
+        val user_pass = user.password
+        if (cryptoPass.equals(user_pass)) {
+            return user
+        }
         return user
     }
 
