@@ -6,8 +6,7 @@ import java.security.MessageDigest
 @Component
 class SmUserServiceImpl(val userRepository: UserRepository) : SmUserService {
 
-
-    override fun addUser(userId: String, password: String):SmUser {
+    override fun addUser(userId: String, password: String): SmUser {
 
         val cryptoPass: String = crypto(password)
         val user = userRepository.save(SmUser(userId, cryptoPass))
