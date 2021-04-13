@@ -1,59 +1,43 @@
 package study.nobreak.personalposts.sm
 
+import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
-import java.security.MessageDigest
 import javax.servlet.http.HttpSession
 
 //json형태를 반환해주는 컨트롤
 @RestController
-class SmController(val userRepository: UserRepository) {
+class SmController(var smUserService: SmUserService) {
 
     // create user
-    @GetMapping("/sign")
+    @ResponseBody
+    @PostMapping("/sign")
     fun addSmUser(
         model: Model,
         @RequestParam(value = "id") userId: String,
         @RequestParam(value = "password") password: String
-    ) {
-
-        val cryptoPass: String = crypto(password)
-        val user = userRepository.save(SmUser(userId, cryptoPass))
-
-        println("result: $user")
-        //return ""
-    }
-
-    fun crypto(ss: String): String {
-        val sha = MessageDigest.getInstance("SHA-256")
-        val hexa = sha.digest(ss.toByteArray())
-        val crypto_str = hexa.fold("", { str, it -> str + "%02x".format(it) })
-        return crypto_str
+    ): ResponseEntity<Any> {
+        return ResponseEntity.ok().body(smUserService.addUser(userId, password))
     }
 
     //check user
-    @GetMapping("/login")
+    @PostMapping("/login")
     fun checkSmUser(
         model: Model,
         session: HttpSession,
         @RequestParam(value = "id") userId: String,
         @RequestParam(value = "password") password: String
-    ): String {
-            val cryptoPass = crypto(password)
-            val user = userRepository.findByUserId(userId);
+    ): ResponseEntity<SmUser> {
 
-            if (user != null) {
-                val user_pass = user.password
-                if (cryptoPass.equals(user_pass)) {
-                    session.setAttribute("userId", user.userId)
-                    model.addAttribute("title", "Welcome")
-                    model.addAttribute("userId", userId)
-                    return "complete"
-                }
-            }
+        val user = smUserService.checkUser(userId, password)
+        session.setAttribute("userId", user.userId)
+        model.addAttribute("title", "Welcome")
+        model.addAttribute("userId", userId)
 
-        return "failed"
+        return ResponseEntity.ok().body(user)
     }
+
 }
