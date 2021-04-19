@@ -10,7 +10,7 @@ class SmBoardController(var smBoardService: SmBoardService) {
 
     @PostMapping("/board")
     fun addPost(smBoard: SmBoard): ResponseEntity<Any> {
-        return ResponseEntity.ok().body(smBoardService.boardSave(smBoard))
+        return ResponseEntity.ok().body(smBoardService.addPost(smBoard))
     }
 
 }
