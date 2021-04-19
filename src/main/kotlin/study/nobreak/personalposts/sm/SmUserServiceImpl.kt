@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component
 import java.security.MessageDigest
 
 @Component
-class SmUserServiceImpl(val userRepository: UserRepositories) : SmUserService {
+class SmUserServiceImpl(val userRepository: UserRepository) : SmUserService {
 
     override fun addUser(userId: String, password: String): SmUser {
 

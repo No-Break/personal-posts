@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class SmBoardController(var smBoardService: SmBoardService) {
 
-    @PostMapping("/boardSave")
+    @PostMapping("/board")
     fun boardSave(smBoard: SmBoard): ResponseEntity<Any> {
         return ResponseEntity.ok().body(smBoardService.boardSave(smBoard))
     }
