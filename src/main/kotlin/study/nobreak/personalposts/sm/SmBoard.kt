@@ -5,8 +5,10 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class SmUser(
+data class SmBoard(
     var userId: String,
-    var password: String,
-    @Id @GeneratedValue var id: Long? = null
+    var boardTitle: String,
+    var boardDesc: String,
+    var boardLev: Int,
+    @Id @GeneratedValue var boardId: Int? = null
 )
