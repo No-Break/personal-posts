@@ -6,7 +6,6 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.Table
 import javax.persistence.Column
-//import javax.validation.constraints.NotBlank
 
 @Entity
 @Table(schema = "posts", name = "contents")
