@@ -1,6 +1,6 @@
 package study.nobreak.personalposts.wonos.contents
 
-
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,7 +13,14 @@ class ContentsController(
     private val contentService: ContentsService
 ) {
     @GetMapping("/contents")
+    @ResponseStatus(HttpStatus.OK)
     fun getAllContents(contentsVo: ContentsVo){
         contentService.searchAllContents(contentsVo.title, contentsVo.mainText, contentsVo.writer)
+    }
+
+    @PostMapping("/contents/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createContent(contentsVo: ContentsVo){
+        contentService.createContent(contentsVo.title, contentsVo.mainText, contentsVo.writer)
     }
 }
