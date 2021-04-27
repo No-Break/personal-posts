@@ -14,5 +14,9 @@ class ContentsServiceImpl(
         contentsRepo.findAll()
     }
 
+    override fun createContents(title: String, mainText: String, writer: String) {
+        contentsRepo.save(Contents(title = title, mainText = mainText, writer = writer))
+    }
+
 }
 
