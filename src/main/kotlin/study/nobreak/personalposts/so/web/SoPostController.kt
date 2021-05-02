@@ -1,21 +1,32 @@
 package study.nobreak.personalposts.so.web
 
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import study.nobreak.personalposts.so.service.SoPostService
-import study.nobreak.personalposts.so.web.vo.SoPostCreateVo
+import study.nobreak.personalposts.so.web.request.SoPostCreateRequest
+import study.nobreak.personalposts.so.web.response.SoPostGetResponse
 
 @RestController
-@RequestMapping("/so/post")
+@RequestMapping("/so/posts")
 class SoPostController(
     private val soPostService: SoPostService
 ) {
+    
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    fun getPosts(): SoPostGetResponse {
+        return soPostService.getAllPosts()
+    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addPost(soPostCreateVo: SoPostCreateVo) {
-        soPostService.addPost(soPostCreateVo.title, soPostCreateVo.content)
+    fun addPost(soPostCreateRequest: SoPostCreateRequest) {
+        soPostService.addPost(soPostCreateRequest.title, soPostCreateRequest.content)
+    }
+    
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deletePost(@PathVariable id: Long) {
+        return soPostService.deletePost(id)
     }
 }
