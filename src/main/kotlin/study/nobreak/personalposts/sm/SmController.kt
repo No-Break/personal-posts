@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+import study.nobreak.personalposts.sm.service.SmUserService
 import javax.servlet.http.HttpSession
 
 //json형태를 반환해주는 컨트롤
