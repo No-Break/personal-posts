@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.4.30"
     kotlin("plugin.spring") version "1.4.30"
     kotlin("plugin.jpa") version "1.4.30"
+    jacoco
 }
 
 group = "study.nobreak"
@@ -27,6 +28,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
+jacoco {
+    toolVersion = "0.8.6"
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -36,4 +41,24 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.test {
+    finalizedBy("jacocoTestReport")
+}
+
+tasks.jacocoTestReport {
+    classDirectories.setFrom(
+        files(classDirectories.files.map {
+            fileTree(mapOf("dir" to it, "exclude" to ('A'..'Z').map { a -> "**/Q$a*" }))
+        })
+    )
+    executionData(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+    
+    reports {
+        xml.isEnabled = true
+        html.isEnabled = false
+        csv.isEnabled = false
+        xml.destination = file("${buildDir}/reports/jacoco/report.xml")
+    }
 }
