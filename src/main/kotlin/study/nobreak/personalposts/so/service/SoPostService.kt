@@ -1,9 +1,9 @@
 package study.nobreak.personalposts.so.service
 
-import study.nobreak.personalposts.so.web.response.SoPostGetResponse
+import study.nobreak.personalposts.so.domain.SoPost
 
 interface SoPostService {
     fun addPost(title: String, content: String)
-    fun getAllPosts(): SoPostGetResponse
+    fun getAllPosts(): List<SoPost>
     fun deletePost(id: Long)
 }
