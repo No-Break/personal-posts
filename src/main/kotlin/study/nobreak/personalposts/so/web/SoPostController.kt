@@ -5,22 +5,22 @@ import org.springframework.web.bind.annotation.*
 import study.nobreak.personalposts.so.service.SoPostService
 import study.nobreak.personalposts.so.web.request.SoPostCreateRequest
 import study.nobreak.personalposts.so.web.response.SoPostGetResponse
+import study.nobreak.personalposts.so.web.response.SoPostResponseItem
 
 @RestController
 @RequestMapping("/so/posts")
 class SoPostController(
     private val soPostService: SoPostService
 ) {
-    
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     fun getPosts(): SoPostGetResponse {
-        return soPostService.getAllPosts()
+        return SoPostGetResponse(soPostService.getAllPosts().map { SoPostResponseItem.fromSoPost(it) })
     }
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addPost(soPostCreateRequest: SoPostCreateRequest) {
+    fun addPost(@RequestBody soPostCreateRequest: SoPostCreateRequest) {
         soPostService.addPost(soPostCreateRequest.title, soPostCreateRequest.content)
     }
     

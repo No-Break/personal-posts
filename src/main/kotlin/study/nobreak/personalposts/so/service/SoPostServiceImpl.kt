@@ -16,8 +16,8 @@ class SoPostServiceImpl(
         soPostRepository.save(SoPost(title = title, content = content))
     }
     
-    override fun getAllPosts(): SoPostGetResponse {
-        return SoPostGetResponse(soPostRepository.findAll().map { SoPostResponseItem.fromSoPost(it) })
+    override fun getAllPosts(): List<SoPost> {
+        return soPostRepository.findAll()
     }
     
     override fun deletePost(id: Long) {
