@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service
 import study.nobreak.personalposts.so.domain.SoPost
 import study.nobreak.personalposts.so.exception.NoDataFoundException
 import study.nobreak.personalposts.so.repository.SoPostRepository
-import study.nobreak.personalposts.so.web.response.SoPostGetResponse
-import study.nobreak.personalposts.so.web.response.SoPostResponseItem
 
 @Service
 class SoPostServiceImpl(
@@ -26,5 +24,11 @@ class SoPostServiceImpl(
         } catch (e: EmptyResultDataAccessException) {
             throw NoDataFoundException()
         }
+    }
+    
+    override fun addHiddenContent(postId: Long, question: String, answer: String, content: String) {
+        soPostRepository.findById(postId)
+            .orElseThrow { throw NoDataFoundException() }
+            .addHiddenContent(question, answer, content)
     }
 }
