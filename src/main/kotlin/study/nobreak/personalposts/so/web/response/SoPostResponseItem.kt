@@ -14,7 +14,7 @@ data class SoPostResponseItem(
                 id = soPost.id!!,
                 title = soPost.title,
                 content = soPost.content,
-                hiddenContentQuestion = soPost.hiddenContent?.question ?: ""
+                hiddenContentQuestion = if (soPost.hiddenContent != null) soPost.hiddenContent!!.question else ""
             )
         }
     }
