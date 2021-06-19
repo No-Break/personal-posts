@@ -5,8 +5,10 @@ import javax.persistence.*
 @Entity
 class SoHiddenContent(
     @Id
-    @OneToOne
-    @JoinColumn(name="post_id")
+    val postId: Long? = null,
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
     val post: SoPost,
     val question: String,
     val answer: String,
