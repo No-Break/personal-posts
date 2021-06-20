@@ -8,7 +8,7 @@ import javax.persistence.Table
 import javax.persistence.Column
 
 @Entity
-@Table(schema = "posts", name = "contents")
+//@Table(schema = "posts", name = "contents")
 data class Contents(
     @Id
     @Column(name = "id")
@@ -24,4 +24,3 @@ data class Contents(
     @Column(name = "writer")
     var writer: String = ""
 )
-

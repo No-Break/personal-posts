@@ -9,8 +9,10 @@ import study.nobreak.personalposts.wonos.contents.service.ContentsService
 @Service
 class ContentsServiceImpl(
     private val contentsRepo : ContentsRepository
+
 ) : ContentsService  {
-    override fun searchAllContents(title: String, mainText: String, writer: String) {
+
+    override fun searchAllContents() {
         contentsRepo.findAll()
     }
 
@@ -18,5 +20,11 @@ class ContentsServiceImpl(
         contentsRepo.save(Contents(title = title, mainText = mainText, writer = writer))
     }
 
-}
+    override fun deleteContents(id: Int) {
+        contentsRepo.deleteById(id)
+    }
 
+    override fun updateContents(id: Int) {
+        contentsRepo.save(Contents(id = id))
+    }
+}
