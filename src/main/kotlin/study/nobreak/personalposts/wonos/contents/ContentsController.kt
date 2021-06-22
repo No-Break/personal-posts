@@ -30,13 +30,13 @@ class ContentsController(
         contentService.createContents(contentsVo.title, contentsVo.mainText, contentsVo.writer)
     }
 
-    @DeleteMapping("/contents/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun deleteContents(@PathVariable("id")id: Int) {
         contentService.deleteContents(id)
     }
 
-    @PutMapping("/contents/update/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     fun updateContents(@PathVariable("id")id: Int) {
         contentService.updateContents(id)
