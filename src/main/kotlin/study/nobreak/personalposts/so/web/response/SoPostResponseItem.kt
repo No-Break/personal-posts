@@ -5,11 +5,17 @@ import study.nobreak.personalposts.so.domain.SoPost
 data class SoPostResponseItem(
     val id: Long,
     val title: String,
-    val content: String
+    val content: String,
+    val hiddenContentQuestion: String
 ) {
     companion object {
         fun fromSoPost(soPost: SoPost): SoPostResponseItem {
-            return SoPostResponseItem(soPost.id!!, soPost.title, soPost.content)
+            return SoPostResponseItem(
+                id = soPost.id!!,
+                title = soPost.title,
+                content = soPost.content,
+                hiddenContentQuestion = if (soPost.hiddenContent != null) soPost.hiddenContent!!.question else ""
+            )
         }
     }
 }

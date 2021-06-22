@@ -2,11 +2,10 @@ package study.nobreak.personalposts.so.service
 
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import study.nobreak.personalposts.so.domain.SoPost
 import study.nobreak.personalposts.so.exception.NoDataFoundException
 import study.nobreak.personalposts.so.repository.SoPostRepository
-import study.nobreak.personalposts.so.web.response.SoPostGetResponse
-import study.nobreak.personalposts.so.web.response.SoPostResponseItem
 
 @Service
 class SoPostServiceImpl(
@@ -26,5 +25,12 @@ class SoPostServiceImpl(
         } catch (e: EmptyResultDataAccessException) {
             throw NoDataFoundException()
         }
+    }
+    
+    @Transactional
+    override fun addHiddenContent(postId: Long, question: String, answer: String, content: String) {
+        soPostRepository.findById(postId)
+            .orElseThrow { throw NoDataFoundException() }
+            .addHiddenContent(question, answer, content)
     }
 }
