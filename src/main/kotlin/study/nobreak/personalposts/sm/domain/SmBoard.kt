@@ -1,4 +1,4 @@
-package study.nobreak.personalposts.sm
+package study.nobreak.personalposts.sm.domain
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

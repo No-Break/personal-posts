@@ -1,7 +1,7 @@
 package study.nobreak.personalposts.sm.service
 
 import org.springframework.stereotype.Component
-import study.nobreak.personalposts.sm.SmUser
+import study.nobreak.personalposts.sm.domain.SmUser
 import study.nobreak.personalposts.sm.repository.UserRepository
 import java.security.MessageDigest
 

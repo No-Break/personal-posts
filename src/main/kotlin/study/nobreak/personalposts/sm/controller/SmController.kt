@@ -1,4 +1,4 @@
-package study.nobreak.personalposts.sm
+package study.nobreak.personalposts.sm.controller
 
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
+import study.nobreak.personalposts.sm.domain.SmUser
 import study.nobreak.personalposts.sm.service.SmUserService
 import javax.servlet.http.HttpSession
 
