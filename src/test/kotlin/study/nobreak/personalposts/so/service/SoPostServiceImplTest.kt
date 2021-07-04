@@ -38,16 +38,16 @@ internal class SoPostServiceImplTest {
     }
     
     @Test
-    fun `getAllPosts success`() {
+    fun `getAll success`() {
         every {
-            soPostRepository.findAll()
+            soPostRepository.findAllByFetchJoinCondition(true)
         } returns listOf(
             mockSoPost(id = 1, title = "title-1"),
             mockSoPost(id = 2),
             mockSoPost(id = 3),
             mockSoPost(id = 4)
         )
-        val result = soPostService.getAllPosts()
+        val result = soPostService.getAll(true)
         
         assertEquals(4, result.size)
         assertEquals("title-1", result[0].title)

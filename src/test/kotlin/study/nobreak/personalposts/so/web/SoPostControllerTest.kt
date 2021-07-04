@@ -26,12 +26,15 @@ internal class SoPostControllerTest {
     
     @Test
     fun `getPosts success`() {
-        every { soPostService.getAllPosts() } returns listOf(
+        every { soPostService.getAll(true) } returns listOf(
             mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
             mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
         )
         
-        mockMvc.perform(get("/so/posts"))
+        mockMvc.perform(
+            get("/so/posts")
+                .param("isQuestionIncluded", "true")
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.list[0].id").value("1"))
             .andExpect(jsonPath("$.list[0].title").value("title-1"))

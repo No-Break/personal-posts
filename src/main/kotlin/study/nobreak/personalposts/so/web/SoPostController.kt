@@ -15,8 +15,9 @@ class SoPostController(
 ) {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getPosts(): SoPostGetResponse {
-        return SoPostGetResponse(soPostService.getAllPosts().map { SoPostResponseItem.fromSoPost(it) })
+    fun getPosts(@RequestParam isQuestionIncluded: Boolean = false): SoPostGetResponse {
+        return SoPostGetResponse(
+            soPostService.getAll(isQuestionIncluded).map { SoPostResponseItem.fromSoPost(it, isQuestionIncluded) })
     }
     
     @PostMapping
