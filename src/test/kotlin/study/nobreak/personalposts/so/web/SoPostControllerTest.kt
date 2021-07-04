@@ -84,10 +84,10 @@ internal class SoPostControllerTest {
         every { soPostService.addHiddenContent(any(), any(), any(), any()) } returns Unit
         
         mockMvc.perform(
-            post("/so/posts/hidden")
+            post("/so/posts/{id}/hidden-content", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 //language=json
-                .content("{\n  \"postId\": 1,\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
+                .content("{\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
         ).andExpect(status().isCreated)
         
         verify { soPostService.addHiddenContent(1L, "question-1", "answer-1", "content-1") }
@@ -98,10 +98,10 @@ internal class SoPostControllerTest {
         every { soPostService.addHiddenContent(any(), any(), any(), any()) } throws DataConflictException()
         
         mockMvc.perform(
-            post("/so/posts/hidden")
+            post("/so/posts/{id}/hidden-content", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 //language=json
-                .content("{\n  \"postId\": 1,\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
+                .content("{\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
         ).andExpect(status().isConflict)
         
         verify { soPostService.addHiddenContent(1L, "question-1", "answer-1", "content-1") }

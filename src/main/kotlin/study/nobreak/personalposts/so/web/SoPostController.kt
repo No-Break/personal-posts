@@ -31,11 +31,14 @@ class SoPostController(
         return soPostService.deletePost(id)
     }
     
-    @PostMapping("/hidden")
+    @PostMapping("/{id}/hidden-content")
     @ResponseStatus(HttpStatus.CREATED)
-    fun addHiddenContent(@RequestBody soHiddenContentCreateRequest: SoHiddenContentCreateRequest) {
+    fun addHiddenContent(
+        @PathVariable id: Long,
+        @RequestBody soHiddenContentCreateRequest: SoHiddenContentCreateRequest
+    ) {
         with(soHiddenContentCreateRequest) {
-            soPostService.addHiddenContent(postId, question, answer, content)
+            soPostService.addHiddenContent(id, question, answer, content)
         }
     }
 }
