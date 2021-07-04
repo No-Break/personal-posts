@@ -25,7 +25,7 @@ internal class SoPostControllerTest {
     lateinit var soPostService: SoPostService
     
     @Test
-    fun `getPosts success`() {
+    fun `getPosts isQuestionIncluded true success`() {
         every { soPostService.getAll(true) } returns listOf(
             mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
             mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
@@ -44,6 +44,23 @@ internal class SoPostControllerTest {
             .andExpect(jsonPath("$.list[1].title").value("title-2"))
             .andExpect(jsonPath("$.list[1].content").value("content-2"))
             .andExpect(jsonPath("$.list[1].hiddenContentQuestion").value("hiddenContentQuestion-2"))
+    }
+    
+    @Test
+    fun `getPosts isQuestionIncluded default false success`() {
+        every { soPostService.getAll(false) } returns listOf(
+            mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
+            mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
+        )
+        
+        mockMvc.perform(get("/so/posts"))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.list[0].id").value("1"))
+            .andExpect(jsonPath("$.list[0].title").value("title-1"))
+            .andExpect(jsonPath("$.list[0].content").value("content-1"))
+            .andExpect(jsonPath("$.list[1].id").value("2"))
+            .andExpect(jsonPath("$.list[1].title").value("title-2"))
+            .andExpect(jsonPath("$.list[1].content").value("content-2"))
     }
     
     @Test
