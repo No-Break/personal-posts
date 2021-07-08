@@ -15,8 +15,9 @@ class SoPostController(
 ) {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getPosts(): SoPostGetResponse {
-        return SoPostGetResponse(soPostService.getAllPosts().map { SoPostResponseItem.fromSoPost(it) })
+    fun getPosts(@RequestParam isQuestionIncluded: Boolean = false): SoPostGetResponse {
+        return SoPostGetResponse(
+            soPostService.getAll(isQuestionIncluded).map { SoPostResponseItem.fromSoPost(it, isQuestionIncluded) })
     }
     
     @PostMapping
@@ -31,11 +32,14 @@ class SoPostController(
         return soPostService.deletePost(id)
     }
     
-    @PostMapping("/hidden")
+    @PostMapping("/{id}/hidden-content")
     @ResponseStatus(HttpStatus.CREATED)
-    fun addHiddenContent(@RequestBody soHiddenContentCreateRequest: SoHiddenContentCreateRequest) {
+    fun addHiddenContent(
+        @PathVariable id: Long,
+        @RequestBody soHiddenContentCreateRequest: SoHiddenContentCreateRequest
+    ) {
         with(soHiddenContentCreateRequest) {
-            soPostService.addHiddenContent(postId, question, answer, content)
+            soPostService.addHiddenContent(id, question, answer, content)
         }
     }
 }

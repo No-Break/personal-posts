@@ -15,8 +15,8 @@ class SoPostServiceImpl(
         soPostRepository.save(SoPost(title = title, content = content))
     }
     
-    override fun getAllPosts(): List<SoPost> {
-        return soPostRepository.findAll()
+    override fun getAll(isQuestionIncluded: Boolean): List<SoPost> {
+        return soPostRepository.findAllByFetchJoinCondition(isQuestionIncluded)
     }
     
     override fun deletePost(id: Long) {

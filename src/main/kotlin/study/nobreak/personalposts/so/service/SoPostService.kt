@@ -4,7 +4,7 @@ import study.nobreak.personalposts.so.domain.SoPost
 
 interface SoPostService {
     fun addPost(title: String, content: String)
-    fun getAllPosts(): List<SoPost>
+    fun getAll(isQuestionIncluded: Boolean): List<SoPost>
     fun deletePost(id: Long)
     fun addHiddenContent(postId: Long, question: String, answer: String, content: String)
 }
