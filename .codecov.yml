@@ -1,2 +1,6 @@
 codecov:
   branch: main
+coverage:
+  status:
+    patch: false
+    project: false

@@ -25,13 +25,16 @@ internal class SoPostControllerTest {
     lateinit var soPostService: SoPostService
     
     @Test
-    fun `getPosts success`() {
-        every { soPostService.getAllPosts() } returns listOf(
+    fun `getPosts isQuestionIncluded true success`() {
+        every { soPostService.getAll(true) } returns listOf(
             mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
             mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
         )
         
-        mockMvc.perform(get("/so/posts"))
+        mockMvc.perform(
+            get("/so/posts")
+                .param("isQuestionIncluded", "true")
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.list[0].id").value("1"))
             .andExpect(jsonPath("$.list[0].title").value("title-1"))
@@ -41,6 +44,23 @@ internal class SoPostControllerTest {
             .andExpect(jsonPath("$.list[1].title").value("title-2"))
             .andExpect(jsonPath("$.list[1].content").value("content-2"))
             .andExpect(jsonPath("$.list[1].hiddenContentQuestion").value("hiddenContentQuestion-2"))
+    }
+    
+    @Test
+    fun `getPosts isQuestionIncluded default false success`() {
+        every { soPostService.getAll(false) } returns listOf(
+            mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
+            mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
+        )
+        
+        mockMvc.perform(get("/so/posts"))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.list[0].id").value("1"))
+            .andExpect(jsonPath("$.list[0].title").value("title-1"))
+            .andExpect(jsonPath("$.list[0].content").value("content-1"))
+            .andExpect(jsonPath("$.list[1].id").value("2"))
+            .andExpect(jsonPath("$.list[1].title").value("title-2"))
+            .andExpect(jsonPath("$.list[1].content").value("content-2"))
     }
     
     @Test
@@ -84,10 +104,10 @@ internal class SoPostControllerTest {
         every { soPostService.addHiddenContent(any(), any(), any(), any()) } returns Unit
         
         mockMvc.perform(
-            post("/so/posts/hidden")
+            post("/so/posts/{id}/hidden-content", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 //language=json
-                .content("{\n  \"postId\": 1,\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
+                .content("{\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
         ).andExpect(status().isCreated)
         
         verify { soPostService.addHiddenContent(1L, "question-1", "answer-1", "content-1") }
@@ -98,10 +118,10 @@ internal class SoPostControllerTest {
         every { soPostService.addHiddenContent(any(), any(), any(), any()) } throws DataConflictException()
         
         mockMvc.perform(
-            post("/so/posts/hidden")
+            post("/so/posts/{id}/hidden-content", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 //language=json
-                .content("{\n  \"postId\": 1,\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
+                .content("{\n  \"question\": \"question-1\",\n  \"answer\": \"answer-1\",\n  \"content\": \"content-1\"\n}")
         ).andExpect(status().isConflict)
         
         verify { soPostService.addHiddenContent(1L, "question-1", "answer-1", "content-1") }
