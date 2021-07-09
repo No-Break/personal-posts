@@ -40,5 +40,4 @@ class SmController(var smUserService: SmUserService) {
 
         return ResponseEntity.ok().body(user)
     }
-
 }
