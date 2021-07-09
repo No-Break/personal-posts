@@ -12,7 +12,7 @@ import study.nobreak.personalposts.sm.service.SmBoardService
 class SmBoardController(var smBoardService: SmBoardService) {
 
     @PostMapping("/board/post")
-    fun addPost(smBoard: SmBoard): ResponseEntity<Any> {
+    fun addPost(smBoard: SmBoard): ResponseEntity<SmBoard> {
         return ResponseEntity.ok().body(smBoardService.addPost(smBoard))
     }
 
@@ -22,7 +22,7 @@ class SmBoardController(var smBoardService: SmBoardService) {
     }
 
     @GetMapping("/board/post/{userId}")
-    fun getUserPost(@PathVariable userId: String): ResponseEntity<Any> {
+    fun getUserPost(@PathVariable userId: String): ResponseEntity<List<SmBoard>> {
         return ResponseEntity.ok().body(smBoardService.getUserPost(userId))
     }
 }
