@@ -1,6 +1,8 @@
 package study.nobreak.personalposts.so.service
 
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import study.nobreak.personalposts.so.domain.SoPost
@@ -15,8 +17,8 @@ class SoPostServiceImpl(
         soPostRepository.save(SoPost(title = title, content = content))
     }
     
-    override fun getAll(isQuestionIncluded: Boolean): List<SoPost> {
-        return soPostRepository.findAllByFetchJoinCondition(isQuestionIncluded)
+    override fun getAll(isQuestionIncluded: Boolean, pageable: Pageable): Page<SoPost> {
+        return soPostRepository.findAllByFetchJoinCondition(isQuestionIncluded, pageable)
     }
     
     override fun deletePost(id: Long) {
