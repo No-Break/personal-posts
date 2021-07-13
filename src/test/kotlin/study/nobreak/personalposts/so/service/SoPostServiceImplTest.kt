@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
 import study.nobreak.personalposts.so.domain.SoPost
 import study.nobreak.personalposts.so.exception.DataConflictException
 import study.nobreak.personalposts.so.exception.NoDataFoundException
@@ -40,17 +42,19 @@ internal class SoPostServiceImplTest {
     @Test
     fun `getAll success`() {
         every {
-            soPostRepository.findAllByFetchJoinCondition(true)
-        } returns listOf(
-            mockSoPost(id = 1, title = "title-1"),
-            mockSoPost(id = 2),
-            mockSoPost(id = 3),
-            mockSoPost(id = 4)
+            soPostRepository.findAllByFetchJoinCondition(true, any())
+        } returns PageImpl(
+            listOf(
+                mockSoPost(id = 1, title = "title-1"),
+                mockSoPost(id = 2),
+                mockSoPost(id = 3),
+                mockSoPost(id = 4)
+            )
         )
-        val result = soPostService.getAll(true)
+        val result = soPostService.getAll(true, PageRequest.of(1, 10))
         
         assertEquals(4, result.size)
-        assertEquals("title-1", result[0].title)
+        assertEquals("title-1", result.content[0].title)
     }
     
     @Test

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*
 import study.nobreak.personalposts.so.service.SoPostService
 import study.nobreak.personalposts.so.web.request.SoHiddenContentCreateRequest
 import study.nobreak.personalposts.so.web.request.SoPostCreateRequest
+import study.nobreak.personalposts.so.web.request.SoPostGetRequest
 import study.nobreak.personalposts.so.web.response.SoPostGetResponse
 import study.nobreak.personalposts.so.web.response.SoPostResponseItem
 
@@ -15,9 +16,16 @@ class SoPostController(
 ) {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun getPosts(@RequestParam isQuestionIncluded: Boolean = false): SoPostGetResponse {
-        return SoPostGetResponse(
-            soPostService.getAll(isQuestionIncluded).map { SoPostResponseItem.fromSoPost(it, isQuestionIncluded) })
+    fun getPosts(soPostGetRequest: SoPostGetRequest): SoPostGetResponse {
+        return soPostService.getAll(soPostGetRequest.isQuestionIncluded, soPostGetRequest.toPageable()).let { page ->
+            SoPostGetResponse(
+                content = page.content.map {
+                    SoPostResponseItem.fromSoPost(it, soPostGetRequest.isQuestionIncluded)
+                },
+                totalPages = page.totalPages,
+                totalElements = page.totalElements
+            )
+        }
     }
     
     @PostMapping

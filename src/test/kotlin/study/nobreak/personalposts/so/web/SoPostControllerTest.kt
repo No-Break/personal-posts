@@ -6,6 +6,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.data.domain.PageImpl
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
@@ -26,9 +27,11 @@ internal class SoPostControllerTest {
     
     @Test
     fun `getPosts isQuestionIncluded true success`() {
-        every { soPostService.getAll(true) } returns listOf(
-            mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
-            mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
+        every { soPostService.getAll(true, any()) } returns PageImpl(
+            listOf(
+                mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
+                mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
+            )
         )
         
         mockMvc.perform(
@@ -36,31 +39,37 @@ internal class SoPostControllerTest {
                 .param("isQuestionIncluded", "true")
         )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.list[0].id").value("1"))
-            .andExpect(jsonPath("$.list[0].title").value("title-1"))
-            .andExpect(jsonPath("$.list[0].content").value("content-1"))
-            .andExpect(jsonPath("$.list[0].hiddenContentQuestion").value("hiddenContentQuestion-1"))
-            .andExpect(jsonPath("$.list[1].id").value("2"))
-            .andExpect(jsonPath("$.list[1].title").value("title-2"))
-            .andExpect(jsonPath("$.list[1].content").value("content-2"))
-            .andExpect(jsonPath("$.list[1].hiddenContentQuestion").value("hiddenContentQuestion-2"))
+            .andExpect(jsonPath("$.content[0].id").value("1"))
+            .andExpect(jsonPath("$.content[0].title").value("title-1"))
+            .andExpect(jsonPath("$.content[0].content").value("content-1"))
+            .andExpect(jsonPath("$.content[0].hiddenContentQuestion").value("hiddenContentQuestion-1"))
+            .andExpect(jsonPath("$.content[1].id").value("2"))
+            .andExpect(jsonPath("$.content[1].title").value("title-2"))
+            .andExpect(jsonPath("$.content[1].content").value("content-2"))
+            .andExpect(jsonPath("$.content[1].hiddenContentQuestion").value("hiddenContentQuestion-2"))
     }
     
     @Test
     fun `getPosts isQuestionIncluded default false success`() {
-        every { soPostService.getAll(false) } returns listOf(
-            mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
-            mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
+        every { soPostService.getAll(false, any()) } returns PageImpl(
+            listOf(
+                mockSoPost(id = 1, title = "title-1", content = "content-1", question = "hiddenContentQuestion-1"),
+                mockSoPost(id = 2, title = "title-2", content = "content-2", question = "hiddenContentQuestion-2")
+            )
         )
         
-        mockMvc.perform(get("/so/posts"))
+        mockMvc.perform(
+            get("/so/posts")
+                .param("pageNumber", "1")
+                .param("pageSize", "1")
+        )
             .andExpect(status().isOk)
-            .andExpect(jsonPath("$.list[0].id").value("1"))
-            .andExpect(jsonPath("$.list[0].title").value("title-1"))
-            .andExpect(jsonPath("$.list[0].content").value("content-1"))
-            .andExpect(jsonPath("$.list[1].id").value("2"))
-            .andExpect(jsonPath("$.list[1].title").value("title-2"))
-            .andExpect(jsonPath("$.list[1].content").value("content-2"))
+            .andExpect(jsonPath("$.content[0].id").value("1"))
+            .andExpect(jsonPath("$.content[0].title").value("title-1"))
+            .andExpect(jsonPath("$.content[0].content").value("content-1"))
+            .andExpect(jsonPath("$.content[1].id").value("2"))
+            .andExpect(jsonPath("$.content[1].title").value("title-2"))
+            .andExpect(jsonPath("$.content[1].content").value("content-2"))
     }
     
     @Test
