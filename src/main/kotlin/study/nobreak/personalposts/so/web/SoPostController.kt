@@ -31,7 +31,7 @@ class SoPostController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun addPost(@RequestBody soPostCreateRequest: SoPostCreateRequest) {
-        soPostService.addPost(soPostCreateRequest.title, soPostCreateRequest.content)
+        soPostService.addPost(soPostCreateRequest.authorId, soPostCreateRequest.title, soPostCreateRequest.content)
     }
     
     @DeleteMapping("/{id}")

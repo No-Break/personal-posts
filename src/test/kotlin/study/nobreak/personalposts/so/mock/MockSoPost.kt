@@ -6,11 +6,12 @@ fun mockSoPost(
     id: Long,
     title: String = "mock-title",
     content: String = "mock-content",
+    authorId: Long = 1L,
     hiddenContent: String? = null,
     question: String? = null,
     answer: String? = null
 ): SoPost {
-    return SoPost(id, title, content)
+    return SoPost(id, authorId, title, content)
         .apply {
             if ((hiddenContent == null && question == null && answer == null).not()) {
                 this.addHiddenContent(

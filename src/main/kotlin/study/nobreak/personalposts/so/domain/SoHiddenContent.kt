@@ -8,7 +8,7 @@ class SoHiddenContent(
     val postId: Long? = null,
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId")
     val post: SoPost,
     val question: String,
     val answer: String,

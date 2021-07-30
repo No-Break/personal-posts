@@ -74,16 +74,16 @@ internal class SoPostControllerTest {
     
     @Test
     fun `addPost success`() {
-        every { soPostService.addPost(any(), any()) } returns Unit
+        every { soPostService.addPost(any(), any(), any()) } returns Unit
         
         mockMvc.perform(
             post("/so/posts")
                 .contentType(MediaType.APPLICATION_JSON)
                 //language=json
-                .content("{\n  \"title\": \"title-1\",\n  \"content\": \"content-1\"\n}")
+                .content("{\n  \"authorId\": \"1\",\n  \"title\": \"title-1\",\n  \"content\": \"content-1\"\n}")
         ).andExpect(status().isCreated)
         
-        verify { soPostService.addPost("title-1", "content-1") }
+        verify { soPostService.addPost(1L, "title-1", "content-1") }
     }
     
     @Test

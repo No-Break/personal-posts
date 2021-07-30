@@ -13,8 +13,8 @@ import study.nobreak.personalposts.so.repository.SoPostRepository
 class SoPostServiceImpl(
     private val soPostRepository: SoPostRepository
 ): SoPostService {
-    override fun addPost(title: String, content: String) {
-        soPostRepository.save(SoPost(title = title, content = content))
+    override fun addPost(authorId: Long, title: String, content: String) {
+        soPostRepository.save(SoPost(authorId = authorId, title = title, content = content))
     }
     
     override fun getAll(isQuestionIncluded: Boolean, pageable: Pageable): Page<SoPost> {
