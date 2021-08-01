@@ -34,9 +34,9 @@ internal class SoPostServiceImplTest {
             content = "content"
         )
         
-        soPostService.addPost(title = "title", content = "content")
+        soPostService.addPost(authorId = 1L, title = "title", content = "content")
         
-        verify { soPostRepository.save(SoPost(title = "title", content = "content")) }
+        verify { soPostRepository.save(SoPost(authorId = 1L, title = "title", content = "content")) }
     }
     
     @Test
@@ -107,7 +107,7 @@ internal class SoPostServiceImplTest {
         every {
             soPostRepository.findById(any())
         } returns Optional.of(
-            mockSoPost(1, "title", "content", "question", "answer", "content")
+            mockSoPost(1, "title", "content", 1L, "question", "answer", "content")
         )
         
         assertThrows<DataConflictException> {

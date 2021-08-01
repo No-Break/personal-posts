@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import study.nobreak.personalposts.so.domain.SoPost
+import study.nobreak.personalposts.so.domain.SoUser
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -18,8 +19,9 @@ internal class SoPostDslRepositoryImplTest @Autowired constructor(
     @Test
     fun `findAllByFetchJoinCondition isHiddenContentIncluded true success`() {
         entityManager.apply {
-            persist(SoPost(title = "title-0", content = "content-0"))
-            persist(SoPost(title = "title-1", content = "content-1").apply {
+            persist(SoUser(id = 1L, name = "홍길동"))
+            persist(SoPost(authorId = 1L, title = "title-0", content = "content-0"))
+            persist(SoPost(authorId = 1L, title = "title-1", content = "content-1").apply {
                 addHiddenContent("question-1", "answer-1", "hidden-content-1")
             })
             flush()
@@ -43,8 +45,9 @@ internal class SoPostDslRepositoryImplTest @Autowired constructor(
     @Test
     fun `findAllByFetchJoinCondition isHiddenContentIncluded false success`() {
         entityManager.apply {
-            persist(SoPost(title = "title-0", content = "content-0"))
-            persist(SoPost(title = "title-1", content = "content-1").apply {
+            persist(SoUser(id = 1L, name = "홍길동"))
+            persist(SoPost(authorId = 1L, title = "title-0", content = "content-0"))
+            persist(SoPost(authorId = 1L, title = "title-1", content = "content-1").apply {
                 addHiddenContent("question-1", "answer-1", "hidden-content-1")
             })
             flush()

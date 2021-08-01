@@ -8,3 +8,4 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL57Dialect
+    show-sql: false
